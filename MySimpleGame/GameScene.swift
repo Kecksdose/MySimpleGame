@@ -7,6 +7,38 @@
 //
 
 import SpriteKit
+// some usefull functions:
+func + (left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+}
+
+func - (left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+}
+
+func * (point: CGPoint, scalar: CGFloat) -> CGPoint {
+    return CGPoint(x: point.x * scalar, y: point.y * scalar)
+}
+
+func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
+    return CGPoint(x: point.x / scalar, y: point.y / scalar)
+}
+
+#if !(arch(x86_64) || arch(arm64))
+    func sqrt(a: CGFloat) -> CGFloat {
+    return CGFloat(sqrtf(Float(a)))
+    }
+#endif
+
+extension CGPoint {
+    func length() -> CGFloat {
+        return sqrt(x*x + y*y)
+    }
+    
+    func normalized() -> CGPoint {
+        return self / length()
+    }
+}
 
 class GameScene: SKScene {
   
@@ -42,12 +74,25 @@ class GameScene: SKScene {
   override func didMoveToView(view: SKView) {
     backgroundColor = SKColor.whiteColor()
     player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
-    
     addChild(player)
+    
+    runAction(SKAction.repeatActionForever(SKAction.sequence([
+            SKAction.runBlock(addMonster),
+            SKAction.waitForDuration(1.0)
+            ])))
+    
     }
   
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+    }
+    
+    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        let touch = touches.anyObject() as UITouch
+        let touchLocation = touch.locationInNode(self)
+        
+        
+        
     }
   
 }
