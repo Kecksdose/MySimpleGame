@@ -91,6 +91,10 @@ class GameScene: SKScene {
         let touch = touches.anyObject() as UITouch
         let touchLocation = touch.locationInNode(self)
         
+        let projectile = SKSpriteNode(imageNamed: "projectile")
+        projectile.position = player.position
+        
+        
         
         
     }
